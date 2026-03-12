@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Play, Bot, Code, Cpu, Briefcase, Camera, Youtube } from "lucide-react";
@@ -7,12 +8,33 @@ import SectionHeading from "@/components/SectionHeading";
 import ProjectCard from "@/components/ProjectCard";
 import ServiceCard from "@/components/ServiceCard";
 import { DonateButton } from "@/components/DonateButton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const featuredProjects = [
   { title: "AI Content Assistant", description: "GPT-powered content creation tool that generates and schedules social media posts automatically.", tags: ["AI", "React", "Node.js"], image: "" },
   { title: "Smart Home Automation", description: "IoT automation platform connecting 50+ devices with voice control and predictive scheduling.", tags: ["IoT", "MQTT", "React"], image: "" },
   { title: "Blockchain Supply Chain", description: "Decentralized supply chain tracking system with real-time verification and smart contracts.", tags: ["Blockchain", "Solidity", "Web3"], image: "" },
   { title: "Computer Vision Inspector", description: "Industrial quality inspection system using deep learning for defect detection on production lines.", tags: ["TensorFlow", "Python", "Edge AI"], image: "" },
+];
+
+const galleryItems = [
+  { src: '/gallery/1.jpeg', title: 'Photo 1' },
+  { src: '/gallery/2.jpeg', title: 'Photo 2' },
+  { src: '/gallery/3.jpeg', title: 'Photo 3' },
+  { src: '/gallery/4.jpeg', title: 'Photo 4' },
+  { src: '/gallery/5.jpeg', title: 'Photo 5' },
+  { src: '/gallery/6.jpeg', title: 'Photo 6' },
+  { src: '/gallery/7.jpg', title: 'Photo 7' },
+  { src: '/gallery/8.jpg', title: 'Photo 8' },
+];
+
+const videos = [
+  { id: "j98jg_Hu0F0", title: "Prox Mox 1", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/j98jg_Hu0F0/hqdefault.jpg", tags: ["Virtualization", "Proxmox"] },
+  { id: "NumJx4DumFY", title: "TELEGRAM AI AGENT DA N8N HAUSA", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/NumJx4DumFY/hqdefault.jpg", tags: ["AI", "Automation", "Telegram"] },
+  { id: "FlAnqHyidh4", title: "Yadda akayi Amfani Da Large Language Model Locally", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/FlAnqHyidh4/hqdefault.jpg", tags: ["AI", "LLM"] },
+  { id: "5jGmYHvJ3Oc", title: "KALI LINUX INSTALLATION", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/5jGmYHvJ3Oc/hqdefault.jpg", tags: ["Linux", "Kali Linux", "Installation"] },
+  { id: "mUvBW-AE-1Y", title: "Data Science Rating", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/mUvBW-AE-1Y/hqdefault.jpg", tags: ["Data Science"] },
+  { id: "6GQqv-oHHas", title: "loops ady", description: "Description coming soon.", thumbnail: "https://i.ytimg.com/vi/6GQqv-oHHas/hqdefault.jpg", tags: ["Programming"] },
 ];
 
 const services = [
@@ -23,6 +45,9 @@ const services = [
 ];
 
 const Index = () => {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -178,27 +203,31 @@ const Index = () => {
             description="AI experiments, engineering tutorials, and tech discussions — shared across platforms."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              { title: "Deploying LLMs at Scale: A Practical Guide", category: "AI", type: "YouTube" },
-              { title: "Building a Smart Home Automation System", category: "IoT", type: "YouTube" },
-              { title: "Modern Web Architecture Patterns", category: "Engineering", type: "Short" },
-            ].map((post, i) => (
+            {videos.slice(0, 3).map((video, i) => (
               <motion.div
-                key={post.title}
+                key={video.id + i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group p-5 rounded-lg border border-border glass hover:border-primary/30 transition-all cursor-pointer"
+                className="group rounded-lg border border-border glass overflow-hidden hover:border-primary/30 transition-all cursor-pointer"
+                onClick={() => setSelectedVideo(video)}
               >
-                <div className="aspect-video rounded-md bg-muted mb-4 flex items-center justify-center relative">
-                  <Play className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <span className="absolute top-2 right-2 px-2 py-0.5 text-xs font-mono rounded bg-background/80 text-muted-foreground flex items-center gap-1">
-                    <Youtube className="h-3 w-3" /> {post.type}
-                  </span>
+                <div className="aspect-video rounded-md mb-4 overflow-hidden relative">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Play className="h-12 w-12 text-white" />
+                  </div>
                 </div>
-                <span className="font-mono text-xs text-primary">{post.category}</span>
-                <h3 className="font-display text-sm font-semibold mt-1 group-hover:text-primary transition-colors">{post.title}</h3>
+                <div className="p-4">
+                  <span className="font-mono text-xs text-primary">{video.tags.join(', ')}</span>
+                  <h3 className="font-display text-sm font-semibold mt-1">{video.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{video.description}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -219,16 +248,21 @@ const Index = () => {
             description="A glimpse into the engineering workspace and project builds."
           />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto">
-            {[1, 2, 3, 4].map((i) => (
+            {galleryItems.slice(0, 4).map((item, i) => (
               <motion.div
-                key={i}
+                key={item.title}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center"
+                className="aspect-square rounded-lg bg-muted border border-border overflow-hidden group hover:border-primary/30 transition-all cursor-pointer"
+                onClick={() => setSelectedItem(item)}
               >
-                <Cpu className="h-8 w-8 text-muted-foreground/30" />
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </motion.div>
             ))}
           </div>
@@ -272,6 +306,48 @@ const Index = () => {
           </motion.div>
         </div>
       </section>
+
+      <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{selectedVideo?.title}</DialogTitle>
+          </DialogHeader>
+          <iframe
+            src={`https://www.youtube.com/embed/${selectedVideo?.id}`}
+            title={selectedVideo?.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full aspect-video"
+          />
+        </DialogContent>
+      </Dialog>
+
+      {selectedItem && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          onClick={() => setSelectedItem(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="max-w-6xl mx-4 bg-background rounded-lg p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center mb-6">
+              <img
+                src={selectedItem.src}
+                alt={selectedItem.title}
+                className="max-w-full h-auto object-cover rounded"
+              />
+            </div>
+            <div className="text-center">
+              <h3 className="text-2xl font-semibold">{selectedItem.title}</h3>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

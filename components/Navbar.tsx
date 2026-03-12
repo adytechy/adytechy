@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon, Terminal } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -25,9 +25,12 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-          <Terminal className="h-5 w-5 text-primary" />
-          <span>Ady<span className="text-primary">Techy</span></span>
+        <Link href="/" className="flex items-center gap-2">
+          {theme === "dark" ? (
+            <img src="/logo/adytechylogo darkmode.png" alt="AdyTechy Logo" className="h-8 w-auto" />
+          ) : (
+            <img src="/logo/adytechylogo lightmode.png" alt="AdyTechy Logo" className="h-8 w-auto" />
+          )}
         </Link>
 
         {/* Desktop nav */}
